@@ -1,12 +1,15 @@
-#pragma once
-
 #include <vector>
+#include <memory>
+
+using std::vector;
+using std::shared_ptr;
+using std::make_shared;
 
 template <typename T>
 class Node {
 private:
     T value;
-    std::vector<Node<T>> children;
+    vector<Node<T>*> children;
 
 public:
     Node(T val) : value(val) {}
@@ -15,15 +18,15 @@ public:
         return value;
     }
 
-    std::vector<Node<T>>& get_children() {
+    vector<Node<T>*>& get_children() {
         return children;
     }
 
-    const std::vector<Node<T>>& get_children() const {
+    const vector<Node<T>*>& get_children() const {
         return children;
     }
 
-    void add_child(const Node<T>& child) {
+    void add_child(Node<T>* child) {
         children.push_back(child);
     }
 };
