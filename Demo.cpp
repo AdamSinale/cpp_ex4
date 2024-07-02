@@ -45,16 +45,27 @@ int main() {
         cout << node << ", ";
     } // same as BFS: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
     cout << endl;
-    // cout << tree; // Should print the graph using GUI.
+    cout << tree; // Should print the graph using GUI.
 
-    // Tree<double, 3> three_ary_tree; // 3-ary tree.
-    // three_ary_tree.add_root(root_node);
-    // three_ary_tree.add_sub_node(root_node, n1);
-    // three_ary_tree.add_sub_node(root_node, n2);
-    // three_ary_tree.add_sub_node(root_node, n3);
-    // three_ary_tree.add_sub_node(n1, n4);
-    // three_ary_tree.add_sub_node(n2, n5);
+    Tree<double, 3> three_ary_tree; // 3-ary tree.
+    three_ary_tree.add_root(&root_node);
+    three_ary_tree.add_sub_node(&root_node, &n1);
+    three_ary_tree.add_sub_node(&root_node, &n2);
+    three_ary_tree.add_sub_node(&root_node, &n3);
+    three_ary_tree.add_sub_node(&n1, &n4);
+    three_ary_tree.add_sub_node(&n2, &n5);
 
+    for (auto node = three_ary_tree.begin_bfs_scan(); node != three_ary_tree.end_bfs_scan(); ++node) {
+        cout << node << ", ";
+    } // prints: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+    cout << endl;
+    for (auto node = three_ary_tree.begin_dfs_scan(); node != three_ary_tree.end_dfs_scan(); ++node) {
+        cout << node << ", ";
+    } // prints: 1.5, 1.2, 1.6, 1.3, 1.4, 1.1
+    cout << endl;
+    for (auto node : three_ary_tree) {
+        cout << node << ", ";
+    } // same as BFS: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
     // // The tree should look like:
     // /**
     //  *       root = 1.1
