@@ -1,6 +1,8 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using std::vector;
 using std::shared_ptr;
@@ -20,6 +22,11 @@ public:
 
     T get_value() const {
         return value;
+    }
+    std::string get_value_str() const{ 
+        std::ostringstream oss;
+        oss << value;
+        return oss.str();
     }
 
     vector<Node<T>*>& get_children() {

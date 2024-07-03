@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <iostream>
 
 using std::queue;
 using std::vector;
@@ -19,13 +20,17 @@ private:
 
 public:
     Tree() : root(nullptr) {}
-    ~Tree() {} 
+    ~Tree() {
+        clearTree(root);
+    }
     
+    size_t getK(){ return k; }
     void add_root(Node<T>* root) { this->root = root; }
+    Node<T>* getRoot() { return this->root; }
 
     void add_sub_node(Node<T>* parent, Node<T>* child);
 
-    friend ostream& operator<<(ostream& os, const Tree<T, k>& tree) {
+    friend std::ostream& operator<<(std::ostream& os, const Tree<T, k>& tree) {
         // Implement printing logic here
         return os;
     }
@@ -49,14 +54,14 @@ public:
             return node_queue.front();
         }
 
-        friend ostream& operator<<(ostream& os, const TreeIterator& iterator) {
+        friend std::ostream& operator<<(std::ostream& os, const TreeIterator& iterator) {
             return os << *iterator;
         }
     };
 
     class PreOrderIterator : public TreeIterator {
     public:
-        PreOrderIterator(Node<T>* root) : TreeIterator() {
+        PreOrderIterator(Node<T>* root) {
             if (root != nullptr) {
                 this->visit(root);
             }
@@ -69,7 +74,7 @@ public:
 
     class PostOrderIterator : public TreeIterator {
     public:
-        PostOrderIterator(Node<T>* root) : TreeIterator() {
+        PostOrderIterator(Node<T>* root) {
             if (root != nullptr) {
                 this->visit(root);
             }
@@ -82,7 +87,7 @@ public:
 
     class InOrderIterator : public TreeIterator {
     public:
-        InOrderIterator(Node<T>* root) : TreeIterator() {
+        InOrderIterator(Node<T>* root) {
             if (root != nullptr) {
                 this->visit(root);
             }
@@ -96,7 +101,7 @@ public:
 
     class BFSIterator : public TreeIterator {
     public:
-        BFSIterator(Node<T>* root) : TreeIterator() {
+        BFSIterator(Node<T>* root) {
             if (root != nullptr) {
                 this->visit(root);
             }
@@ -110,7 +115,7 @@ public:
 
     class DFSIterator : public TreeIterator {
     public:
-        DFSIterator(Node<T>* root) : TreeIterator() {
+        DFSIterator(Node<T>* root) {
             if (root != nullptr) {
                 this->visit(root);
             }
@@ -125,7 +130,18 @@ public:
     BFSIterator begin() { return BFSIterator(root); }
     BFSIterator end() { return BFSIterator(nullptr); }
 
-    void myHeap();
+    vector<Node<T>*> myHeap();
+
+private:
+    void clearTree(Node<T>* node) {
+        if (node == nullptr) {
+            return;
+        }
+        for (auto child : node->get_children()) {
+            clearTree(child);
+        }
+        delete node;
+    }
 };
 
 template<typename T, size_t k>
@@ -199,26 +215,34 @@ void Tree<T, k>::DFSIterator::visit(Node<T>* root) {
 }
 
 template<typename T, size_t k>
-void Tree<T, k>::myHeap() {
+vector<Node<T>*> Tree<T, k>::myHeap() {
     vector<T> values;
     if (k != 2) { 
-        cout << "Heap available only for 2-ary" << endl;
-        return;
+        throw std::invalid_argument("Heap available only for 2-ary");
     }
+    
     for (auto it = this->begin_bfs_scan(); it != this->end_bfs_scan(); ++it) {
         values.push_back((*it)->get_value());
     }
+    
     std::sort(values.begin(), values.end());
-    if (values.empty()) { return; }
-    delete root;
+
+    if (values.empty()) {
+        throw std::invalid_argument("No tree");
+    }
+
+    clearTree(root);
+    root = nullptr;
+
     root = new Node<T>(values[0]);
     vector<Node<T>*> nodes;
     nodes.push_back(root);
-    for (unsigned int i = 1; i < values.size(); i++){
+    for (unsigned int i = 1; i < values.size(); ++i) {
         Node<T>* newNode = new Node<T>(values[i]);
         nodes.push_back(newNode);
         add_sub_node(nodes[(i-1)/2], newNode);
     }
+    return nodes;
 }
 
 #endif // TREE_HPP
