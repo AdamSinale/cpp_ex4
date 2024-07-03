@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main() {
+int main1() {
     Node<double> root_node(1.1);
     Tree<double> tree; // Binary tree that contains doubles.
     tree.add_root(&root_node);

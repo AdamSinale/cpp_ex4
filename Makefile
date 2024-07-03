@@ -362,7 +362,8 @@ compiler_clean: compiler_moc_predefs_clean
 
 main.o: main.cpp tree.cpp \
 		node.cpp \
-		gui_func.cpp
+		gui_func.cpp \
+		complex.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ####### Install
