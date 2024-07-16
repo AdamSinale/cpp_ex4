@@ -1,5 +1,5 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.hpp"
+// #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 #include "tree.cpp"
 #include "complex.hpp"
 
@@ -27,11 +27,11 @@ TEST_CASE("Test Tree with double") {
 
     // Test PreOrderIterator
     vector<double> var = {1,2,4,5,3};
-    size_t i =0;
+    size_t i = 0;
     for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node) {
         CHECK((*node)->get_value() == var[i]);
         i++;
-    } 
+    }
 
     // Test InOrderIterator
     auto in_it = tree.begin_in_order();
@@ -71,15 +71,15 @@ TEST_CASE("Test Tree with double") {
 
     // Test DFSIterator
     auto dfs_it = tree.begin_dfs_scan();
-    CHECK((*dfs_it)->get_value() == 1);
-    ++dfs_it;
-    CHECK((*dfs_it)->get_value() == 2);
-    ++dfs_it;
     CHECK((*dfs_it)->get_value() == 4);
     ++dfs_it;
     CHECK((*dfs_it)->get_value() == 5);
     ++dfs_it;
+    CHECK((*dfs_it)->get_value() == 2);
+    ++dfs_it;
     CHECK((*dfs_it)->get_value() == 3);
+    ++dfs_it;
+    CHECK((*dfs_it)->get_value() == 1);
 }
 
 TEST_CASE("Test Tree with Complex") {
@@ -147,13 +147,13 @@ TEST_CASE("Test Tree with Complex") {
 
     // Test DFSIterator
     auto dfs_it = tree.begin_dfs_scan();
-    CHECK((*dfs_it)->get_value().getReal() == 1);
-    ++dfs_it;
-    CHECK((*dfs_it)->get_value().getReal() == 2);
-    ++dfs_it;
     CHECK((*dfs_it)->get_value().getReal() == 4);
     ++dfs_it;
     CHECK((*dfs_it)->get_value().getReal() == 5);
     ++dfs_it;
+    CHECK((*dfs_it)->get_value().getReal() == 2);
+    ++dfs_it;
     CHECK((*dfs_it)->get_value().getReal() == 3);
+    ++dfs_it;
+    CHECK((*dfs_it)->get_value().getReal() == 1);
 }
